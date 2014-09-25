@@ -9,18 +9,21 @@ namespace PetrGrishin\Module\User\Controller;
 use CController;
 use PetrGrishin\Module\User\Authentication\UserIdentity;
 use PetrGrishin\Module\User\Form\SingInForm;
+use PetrGrishin\View\Response;
 
 class UserController extends CController {
+//    public $layout = false;
 
     public function actionSignIn() {
         $singInForm = new SingInForm();
         if ($data = $this->getRequest()->getPost('data')) {
             $singInForm->setAttributes($data);
             if ($singInForm->validate() && $identity = $this->authenticate($singInForm->username, $singInForm->password)) {
-                $this->renderText(array());
+                var_dump($this->getWebUser()->getName());
+                return $this->renderText(new Response());
             }
         }
-        $this->renderText(array());
+        $this->render('signIn');
     }
 
     public function actionSignUp() {
